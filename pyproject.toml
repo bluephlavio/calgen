@@ -1,0 +1,71 @@
+[project]
+name = "calgen"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "babel>=2.17.0",
+    "jinja2>=3.1.6",
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+calgen = "calgen.cli:app"
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4.0",
+    "mypy>=1.8.0",
+    "poethepoet>=0.25.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+package = true
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["calgen"]
+
+[tool.poe.tasks]
+clean = "find . -type f \\( -name '*.aux' -o -name '*.log' -o -name '*.out' -o -name '*.toc' -o -name '*.fls' -o -name '*.pdf' -o -name '*.tex' -o -name '*.fdb_latexmk' -o -name '*.synctex.gz' \\) -delete"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "C4", "TID", "SIM", "PL", "RUF"]
+ignore = []
+
+[tool.vscode.tasks]
+[[tool.vscode.tasks.tasks]]
+label = "Lint (ruff)"
+type = "shell"
+command = "ruff"
+args = ["check", "src"]
+group = "test"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "poethepoet>=0.36.0",
+    "ruff>=0.12.7",
+]
+
+[[tool.vscode.tasks.tasks]]
+label = "Type Check (mypy)"
+type = "shell"
+command = "mypy"
+args = ["src"]
+group = "test"

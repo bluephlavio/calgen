@@ -1,0 +1,35 @@
+
+\documentclass[20pt]{extarticle}
+\usepackage[a4paper,margin=0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage[utf8]{inputenc}
+\pagestyle{empty}
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1}
+
+\begin{document}
+
+((* for month in months *))
+\rowcolors{2}{}{gray!10}
+\noindent
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{1.5cm}|>{\raggedright\arraybackslash}p{4cm}|X|}
+\hline
+\multicolumn{3}{|l|}{\textbf{\uppercase{((( month.month_name ))) ((( month.year )))}}} \\
+\hline
+((* for i in range(31) *))
+    ((* set day = month.days[i] if i < month.days|length else None *))
+    ((* if day *))
+        ((* if day.is_sunday *))\rowcolor{gray!30}((* endif *))
+        	\textbf{((( "%02d"|format(day.number) )))} & ((( day.name ))) & ((( day.note|default('') ))) \\ \hline
+    ((* else *))
+         & & \\ \hline
+    ((* endif *))
+((* endfor *))
+\end{tabularx}
+((* if not loop.last *))
+\newpage
+((* endif *))
+((* endfor *))
+\end{document}
